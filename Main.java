@@ -36,29 +36,23 @@ public class Main {
                         """
         );
         //READFILE
-        allMember = readFile("member.txt");
-        allCategory  =readFile("category.txt");
-        allProduct = readFile("product.txt");
-        allOrder = readFile("order.txt");
-        Member.setTotalUser(Main.allMember.isEmpty()? 0  : Main.allMember.size());
-        Product.setTotalProduct(Main.allProduct.isEmpty()? 0 : Main.allProduct.size());
-        Order.setTotalOrder(Main.allOrder.isEmpty()? 0: Main.allOrder.size());
-        Category.setTotalCate(Main.allCategory.isEmpty()? 0  : Main.allCategory.size());
+        allMember = readFile("member.obj");
+        allCategory  =readFile("category.obj");
+        allProduct = readFile("product.obj");
+        allOrder = readFile("order.obj");
+        Member.setTotalUser(Main.allMember == null? 0 : Main.allMember.size());
+        Product.setTotalProduct(Main.allProduct == null? 0 : Main.allProduct.size());
+        Order.setTotalOrder(Main.allOrder == null ? 0: Main.allOrder.size());
+        Category.setTotalCate(Main.allCategory == null? 0  : Main.allCategory.size());
     }
     static void end() throws IOException {
-        writeFile(allMember,"member.txt");
-        writeFile(allOrder,"order.txt");
-        writeFile(allCategory,"category.txt");
-        writeFile(allProduct,"product.txt");
+        writeFile(allMember,"member.obj");
+        writeFile(allOrder,"order.obj");
+        writeFile(allCategory,"category.obj");
+        writeFile(allProduct,"product.obj");
         System.out.println("Thanks for shopping with us!");
     }
-
-
-
-
-
     static void roleCommandGuest(){
-
         while(currentStatus){
             System.out.print("""
                 \s
@@ -76,7 +70,6 @@ public class Main {
             String commandString = command.nextLine();
             switch (commandString) {
                 case ("-1") -> {
-                    role = -1;
                     programStatus = false;
                     currentStatus = false;
                 }
@@ -116,7 +109,6 @@ public class Main {
             String commandString = command.nextLine();
             switch (commandString) {
                 case ("-1") -> {
-                    role = -1;
                     programStatus = false;
                     currentStatus = false;
                 }
@@ -135,7 +127,6 @@ public class Main {
         }
     }
     static void roleCommandAdmin() throws ClassCastException{
-
         while(currentStatus){
             System.out.println("""
                 \s
@@ -154,7 +145,6 @@ public class Main {
             String commandString = command.nextLine();
             switch (commandString) {
                 case "-1" -> {
-                    role = -1;
                     programStatus = false;
                     currentStatus = false;
                 }
@@ -173,7 +163,6 @@ public class Main {
         }
     }
     static Member currentUser =new Member(); //GUEST
-    static Integer role=0;
     static boolean programStatus = true;
     static boolean currentStatus = true;
     static HashMap<String,Member> allMember = new HashMap<>(); //USERNAME AND MEMBER
@@ -192,7 +181,7 @@ public class Main {
         copy();
         while(programStatus){
             currentStatus =true;
-            switch (role) {
+            switch (currentUser.getRole()) {
                 case (0) -> roleCommandGuest();
 
                 //MEMBER
@@ -201,6 +190,7 @@ public class Main {
                 //ADMIN
                 case (2) -> roleCommandAdmin();
                 default -> {
+                    break;
                 }
             }
         }

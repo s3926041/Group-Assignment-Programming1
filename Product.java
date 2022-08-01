@@ -6,7 +6,7 @@ public class Product implements Serializable {
 
     private static int totalProduct;
     public Product(String name, Double price, String cateId) {
-        this.name = name;
+        this.name = name.toUpperCase();
         this.pId = String.valueOf(totalProduct);
         this.price = price;
         this.cateId = cateId;

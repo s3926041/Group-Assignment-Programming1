@@ -132,7 +132,6 @@ public class Member implements Serializable {
             //CHECK VALID PASSWORD
             if (Main.allMember.get(username).getPassword().equals(password)) {
                 //SET GLOBAL STATUS
-                Main.role = Main.allMember.get(username).getRole();
                 Main.currentUser = Main.allMember.get(username);
                 Main.currentStatus = false;
                 System.out.println("LOGGED IN!");
@@ -268,12 +267,12 @@ public class Member implements Serializable {
                         continue;
                     } else {
                         status = false;
-                        Order newOrder = new Order(this.userId, orderDetails, curprice, curpricebf);
-                        System.out.println("Here are you order:\nOrder ID" + newOrder.getoId());
+                    
+                        System.out.printf("Here are you order:\nOrder ID %d\n",Main.allOrder.size());
                         for (Product p : orderDetails.keySet()) {
                             System.out.printf("Product ID: %4s | Name: %9s | Quantity: %4d | Price: %10.0f\n", p.getpId(), p.getName(), orderDetails.get(p), p.getPrice() * Double.valueOf(commandInt));
                         }
-
+                        System.out.println();
                         if (this.memberShip.equals("none")) {
                             System.out.println("There is no promotion for normal member");
                         } else if (this.memberShip.equals("Platinum")) {
@@ -286,17 +285,19 @@ public class Member implements Serializable {
                             System.out.println("You are getting 5% discount as an Silver member!");
                             curprice *= 0.95;
                         }
+                        Order newOrder = new Order(this.userId, orderDetails, curprice, curpricebf);
                         this.totalSpend += curprice;
                         System.out.printf("Total price before promotion: %.0f\n", curpricebf);
                         System.out.printf("Total price after promotion: %.0f\n", curprice);
                         if (this.totalSpend >= 25000000.0) {
                             this.memberShip = "Platinum";
                         }else
+                        if (this.totalSpend >= 10000000.0) {
+                            this.memberShip = "Gold";
+                        }else
                         if (this.totalSpend >= 5000000.0) {
                             this.memberShip = "Silver";
-                        }else    if (this.totalSpend >= 10000000.0) {
-                            this.memberShip = "Gold";
-                        }
+                        }    
                     }
 
 
@@ -397,8 +398,6 @@ public class Member implements Serializable {
             System.err.println("Product ID not exist!");
         }
     }
-
-
     public void getOrdersByMemberID() throws ClassCastException {
         System.out.println("Enter Member ID: ");
         Scanner command = new Scanner(System.in);
@@ -414,8 +413,8 @@ public class Member implements Serializable {
                     for (Product j : orderDetails.keySet()) {
                         System.out.printf("Product ID: %4s | Quantity: %4d | Price: %.0f\n",j.getpId(),orderDetails.get(j),j.getPrice() * Double.valueOf(orderDetails.get(j)));
                     }
-                    System.out.printf("Price before promotion: %.0f\n",Main.allOrder.get(userID).getPricebf());
-                    System.out.printf("Total price after promotion: %.0f\n", Main.allOrder.get(userID).getTotalPrice());
+                    System.out.printf("Price before promotion: %.0f\n",Main.allOrder.get(i).getPricebf());
+                    System.out.printf("Total price after promotion: %.0f\n", Main.allOrder.get(i).getTotalPrice());
                 }
             }
         } else {
