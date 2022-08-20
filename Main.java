@@ -52,10 +52,14 @@ public class Main {
         writeFile(allProduct,"product.obj");
         System.out.println("Thanks for shopping with us!");
     }
+    static void pressContinue(){
+        System.out.println("Press enter to continue");
+        try{System.in.read();}
+        catch(Exception e){}
+    }
     static void roleCommandGuest(){
         while(currentStatus){
             System.out.print("""
-                \s
                 INSTRUCTION FOR GUEST
                 -1. QUIT
                 1. REGISTER
@@ -73,12 +77,12 @@ public class Main {
                     programStatus = false;
                     currentStatus = false;
                 }
-                case ("1") -> currentUser.register();
-                case ("2") -> currentUser.login();
-                case ("3") -> currentUser.listProducts();
-                case ("4") -> currentUser.viewProductDetails();
-                case ("5") -> currentUser.listProductsbyCate();
-                case ("6") -> currentUser.sortProduct();
+                case ("1") -> {currentUser.register();pressContinue();}
+                case ("2") -> {currentUser.login();pressContinue();}
+                case ("3") -> {currentUser.listProducts();pressContinue();}
+                case ("4") -> {currentUser.viewProductDetails();pressContinue();}
+                case ("5") -> {currentUser.listProductsbyCate();pressContinue();}
+                case ("6") -> {currentUser.sortProduct();pressContinue();}
                 default -> {
                     currentStatus = false;
                     System.err.println("Invalid command!");
@@ -94,7 +98,6 @@ public class Main {
     static void roleCommandMember(){
         while(currentStatus){
             System.out.println("""
-                \s
                 INSTRUCTION FOR MEMBER
                 -1. QUIT
                 1. VIEW ACCOUNT INFORMATION
@@ -112,13 +115,13 @@ public class Main {
                     programStatus = false;
                     currentStatus = false;
                 }
-                case ("1") -> currentUser.viewInformation("main");
-                case ("2") -> currentUser.createOrder();
-                case ("3") -> currentUser.listProducts();
-                case ("4") -> currentUser.viewProductDetails();
-                case ("5") -> currentUser.listProductsbyCate();
-                case ("6") -> currentUser.sortProduct();
-                case ("7") -> currentUser.getOrderByOID();
+                case ("1") -> {currentUser.viewInformation("main"); pressContinue();}
+                case ("2") -> {currentUser.createOrder();pressContinue();}
+                case ("3") -> {currentUser.listProducts();    pressContinue();}
+                case ("4") -> {currentUser.viewProductDetails();  pressContinue();}
+                case ("5") -> {currentUser.listProductsbyCate();   pressContinue();}
+                case ("6") -> {currentUser.sortProduct();     pressContinue();}
+                case ("7") -> {currentUser.getOrderByOID();   pressContinue();}
                 default -> {
                     currentStatus = false;
                     System.err.println("Invalid command!");
@@ -129,7 +132,6 @@ public class Main {
     static void roleCommandAdmin() throws ClassCastException{
         while(currentStatus){
             System.out.println("""
-                \s
                 INSTRUCTION FOR ADMIN
                 -1. QUIT
                 1. VIEW ALL PRODUCTS\s
@@ -148,13 +150,13 @@ public class Main {
                     programStatus = false;
                     currentStatus = false;
                 }
-                case "1" -> currentUser.listProducts();
-                case "2" -> currentUser.listOrder();
-                case "3" -> currentUser.listMember();
-                case "4" -> currentUser.addNewProduct();
-                case "5" -> currentUser.updatePrice();
-                case "6" -> currentUser.getOrdersByMemberID();
-                case "7" -> currentUser.changeOrderStatus();
+                case "1" -> {currentUser.listProducts(); pressContinue();}
+                case "2" -> {currentUser.listOrder(); pressContinue();}
+                case "3" -> {currentUser.listMember(); pressContinue();}
+                case "4" -> {currentUser.addNewProduct(); pressContinue();}
+                case "5" -> {currentUser.updatePrice(); pressContinue();}
+                case "6" -> {currentUser.getOrdersByMemberID(); pressContinue();}
+                case "7" -> {currentUser.changeOrderStatus(); pressContinue();}
                 default -> {
                     currentStatus = false;
                     System.err.println("Invalid command!\n");

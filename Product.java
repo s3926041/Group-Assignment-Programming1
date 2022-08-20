@@ -2,8 +2,6 @@
 import java.io.*;
 
 public class Product implements Serializable {
-
-
     private static int totalProduct;
     public Product(String name, Double price, String cateId) {
         this.name = name.toUpperCase();
