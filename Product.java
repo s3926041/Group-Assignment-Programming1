@@ -2,21 +2,27 @@
 import java.io.*;
 
 public class Product implements Serializable {
-    private static int totalProduct;
+    public static void setCurrentProductId(Integer currentProductId) {
+        Product.currentProductId = currentProductId;
+    }
+
+    private static Integer currentProductId=0;
     public Product(String name, Double price, String cateId) {
         this.name = name.toUpperCase();
-        this.pId = String.valueOf(totalProduct);
+
         this.price = price;
         this.cateId = cateId;
         Data.allCategory.get(cateId).addProduct(this);
-        totalProduct++;
+        this.pId = String.valueOf(currentProductId);
+        currentProductId++;
+        Data.currentID.put("product",currentProductId);
     }
     private Double price;
     private String name;
     private String pId;
     private String cateId;
-    public static void setTotalProduct(int totalProduct) {
-        Product.totalProduct = totalProduct;
+    public void setCurrentProductId(int currentProductId) {
+        Product.currentProductId = currentProductId;
     }
     public void setPrice(Double price) {
         this.price = price;

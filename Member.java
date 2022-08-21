@@ -5,7 +5,11 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Member implements Serializable {
-    public static int totalUser;
+    public static void setCurrentUserID(Integer currentUserID) {
+        Member.currentUserID = currentUserID;
+    }
+
+    private static Integer currentUserID =0;
     private Double totalSpend = Double.valueOf(0);
     private String userId;
     private String userName;
@@ -22,9 +26,10 @@ public class Member implements Serializable {
         this.userName = userName;
         this.passWord = passWord;
         this.phoneNumber = phoneNumber;
-        this.userId = String.valueOf(totalUser);
         this.role = 1;
-        totalUser++;
+        this.userId = String.valueOf(currentUserID);
+        currentUserID++;
+        Data.currentID.put("member",currentUserID);
     }
 
     public HashMap<String, Order> getOrders() {
@@ -43,12 +48,6 @@ public class Member implements Serializable {
     public void addOrder(Order o) {
         this.orders.put(o.getoId(), o);
     }
-
-    public static void setTotalUser(int totalUser) {
-        Member.totalUser = totalUser;
-    }
-
-
     public String getUsername() {
         return this.userName;
     }
@@ -60,12 +59,6 @@ public class Member implements Serializable {
     public Integer getRole() {
         return this.role;
     }
-
-
-    //DATA STRUCTURE TO MAKE PRODUCT SORTING AND GET MEMBER BY ID EASIER
-    //USER ID + MEMBER
-
-
     //GUEST METHOD
 
     static boolean checkValidGeneral(String input) {
