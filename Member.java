@@ -80,7 +80,7 @@ public class Member implements Serializable {
 
         //CHECK FOR EXISTED USERNAME
         if (checkValidGeneral(username)) {
-            if (Main.allMember.containsKey(username)) {
+            if (Data.allMember.containsKey(username)) {
                 System.out.println("Username existed!");
             } else {
                 System.out.println("Enter password: ");
@@ -98,8 +98,8 @@ public class Member implements Serializable {
                             if (checkValidGeneral(phonenumber)) {
                                 int d = Integer.parseInt(phonenumber);
                                 Member newMember = new Member(username, password, phonenumber);
-                                Main.allMember.put(username, newMember);
-                                Main.allMemberByID.put(newMember.getUserId(), newMember);
+                                Data.allMember.put(username, newMember);
+                                Data.allMemberByID.put(newMember.getUserId(), newMember);
                                 System.out.println("Account has been successfully registered!");
                             } else {
                                 System.err.println("Invalid phone number");
@@ -125,14 +125,14 @@ public class Member implements Serializable {
         Scanner in = new Scanner(System.in);
         String username = in.nextLine();
         //CHECK VALID USERNAME
-        if (Main.allMember.containsKey(username)) {
+        if (Data.allMember.containsKey(username)) {
             System.out.println("Enter password: ");
             in = new Scanner(System.in);
             String password = in.nextLine();
             //CHECK VALID PASSWORD
-            if (Main.allMember.get(username).getPassword().equals(password)) {
+            if (Data.allMember.get(username).getPassword().equals(password)) {
                 //SET GLOBAL STATUS
-                Main.currentUser = Main.allMember.get(username);
+                Main.currentUser = Data.allMember.get(username);
                 Main.currentStatus = false;
                 System.out.println("LOGGED IN!");
                 System.out.println("HI " + username);
@@ -145,7 +145,7 @@ public class Member implements Serializable {
 
     //GUEST AND MEMBER METHOD
     public void listProducts() {
-        HashMap<String, Product> allProduct = Main.allProduct;
+        HashMap<String, Product> allProduct = Data.allProduct;
         System.out.println("ALL PRODUCTS:");
         for (String i : allProduct.keySet()) {
             System.out.printf("ID: %3s | Name: %9s | Price: %9.0f\n", i, allProduct.get(i).getName(), allProduct.get(i).getPrice());
@@ -153,7 +153,7 @@ public class Member implements Serializable {
     }
 
     public void viewProductDetails() {
-        HashMap<String, Product> allProduct = Main.allProduct;
+        HashMap<String, Product> allProduct = Data.allProduct;
         System.out.println("Enter product ID: ");
         Scanner command = new Scanner(System.in);
         String pId = command.nextLine();
@@ -165,7 +165,7 @@ public class Member implements Serializable {
     }
 
     public void listProductsbyCate() {
-        HashMap<String, Category> allCategory = Main.allCategory;
+        HashMap<String, Category> allCategory = Data.allCategory;
         System.out.println("Category available:");
         for (String cateID : allCategory.keySet()) {
             System.out.println("ID: " + cateID + " NAME: " + allCategory.get(cateID).getCateName());
@@ -187,9 +187,9 @@ public class Member implements Serializable {
 
     public void sortProduct() {
         ar = new ArrayList<>();
-        for (String pid : Main.allProduct.keySet()) {
+        for (String pid : Data.allProduct.keySet()) {
             ArrayList<String> row = new ArrayList<>();
-            row.add(String.valueOf(Main.allProduct.get(pid).getPrice()));
+            row.add(String.valueOf(Data.allProduct.get(pid).getPrice()));
             row.add(pid);
             ar.add(row);
         }
@@ -203,7 +203,7 @@ public class Member implements Serializable {
 
             System.out.println("Sorted products: ");
             for (ArrayList<String> row : ar) {
-                Product p = Main.allProduct.get(row.get(1));
+                Product p = Data.allProduct.get(row.get(1));
                 System.out.printf("Id: %4s | Name: %9s | Price: %9.0f \n", p.getpId(), p.getName(), Double.valueOf(row.get(0)));
             }
         } catch (Exception e) {
@@ -240,9 +240,9 @@ public class Member implements Serializable {
             System.out.println("Enter ID of the wanted product: ");
             Scanner command = new Scanner(System.in);
             String commandString = command.nextLine(); //PRODUCT ID
-            if (Main.allProduct.containsKey(commandString)) {
+            if (Data.allProduct.containsKey(commandString)) {
                 try {
-                    Product pr = Main.allProduct.get(commandString);
+                    Product pr = Data.allProduct.get(commandString);
                     System.out.println("Enter quantity ");
                     command = new Scanner(System.in);
                     commandString = command.nextLine();
@@ -268,7 +268,7 @@ public class Member implements Serializable {
                     } else {
                         status = false;
                     
-                        System.out.printf("Here are you order:\nOrder ID %d\n",Main.allOrder.size());
+                        System.out.printf("Here are you order:\nOrder ID %d\n",Data.allOrder.size());
                         for (Product p : orderDetails.keySet()) {
                             System.out.printf("Product ID: %4s | Name: %9s | Quantity: %4d | Price: %10.0f\n", p.getpId(), p.getName(), orderDetails.get(p), p.getPrice() * Double.valueOf(commandInt));
                         }
@@ -322,13 +322,13 @@ public class Member implements Serializable {
 
             if (this.orders.containsKey(commandString)) {
                 HashMap<Product, Integer> orderDetails;
-                orderDetails = Main.allOrder.get(commandString).getOrderDetails();
+                orderDetails = Data.allOrder.get(commandString).getOrderDetails();
                 System.out.println("Order ID: " + commandString);
                 for (Product j : orderDetails.keySet()) {
                     System.out.printf("Product ID: %3s | Quantity: %4d | Price: %.0f\n",j.getpId(),orderDetails.get(j),j.getPrice() * Double.valueOf(orderDetails.get(j)));
                 }
-                System.out.printf("Price before promotion: %.0f\n",Main.allOrder.get(commandString).getPricebf());
-                System.out.printf("Total price after promotion: %.0f\n", Main.allOrder.get(commandString).getTotalPrice());
+                System.out.printf("Price before promotion: %.0f\n",Data.allOrder.get(commandString).getPricebf());
+                System.out.printf("Total price after promotion: %.0f\n", Data.allOrder.get(commandString).getTotalPrice());
             } else {
                 System.err.println("Order ID not exist");
             }
@@ -339,28 +339,28 @@ public class Member implements Serializable {
     //ADMIN
     public void listOrder() {
         System.out.println("ALL ORDERS:");
-        for (String oid : Main.allOrder.keySet()) {
-            Order order = Main.allOrder.get(oid);
+        for (String oid : Data.allOrder.keySet()) {
+            Order order = Data.allOrder.get(oid);
             order.getInfo();
         }
     }
 
     public void listMember() {
         System.out.println("ALL MEMBERS:");
-        for (String i : Main.allMember.keySet()) {
-            Main.allMember.get(i).viewInformation("method");
+        for (String i : Data.allMember.keySet()) {
+            Data.allMember.get(i).viewInformation("method");
         }
     }
 
     public void addNewProduct() {
         System.out.println("Category: ");
-        for (String i : Main.allCategory.keySet()) {
-            System.out.println("Category ID :" + i + " Name: " + Main.allCategory.get(i).getCateName());
+        for (String i : Data.allCategory.keySet()) {
+            System.out.println("Category ID :" + i + " Name: " + Data.allCategory.get(i).getCateName());
         }
         System.out.println("Enter product's category ID:");
         Scanner command = new Scanner(System.in);
         String category = command.nextLine();
-        if (!Main.allCategory.containsKey(category)) {
+        if (!Data.allCategory.containsKey(category)) {
             System.out.println("Category ID not existed");
             return;
         }
@@ -373,7 +373,7 @@ public class Member implements Serializable {
         try {
             Double priceDouble = Double.parseDouble(price);
             Product p = new Product(name, priceDouble, category);
-            Main.allProduct.put(p.getpId(), p);
+            Data.allProduct.put(p.getpId(), p);
             System.out.println("Product added successfully");
         } catch (NumberFormatException nfe) {
             System.err.println("Invalid price input!");
@@ -384,12 +384,12 @@ public class Member implements Serializable {
         System.out.println("Changing product's price \nEnter product ID :");
         Scanner command = new Scanner(System.in);
         String pId = command.nextLine();
-        if (Main.allProduct.containsKey(pId)) {
+        if (Data.allProduct.containsKey(pId)) {
             try {
-                System.out.printf("The current price are %11.0f \n Enter update price:", Main.allProduct.get(pId).getPrice());
+                System.out.printf("The current price are %11.0f \n Enter update price:", Data.allProduct.get(pId).getPrice());
                 command = new Scanner(System.in);
                 Double d = Double.parseDouble(command.nextLine());
-                Main.allProduct.get(pId).setPrice(d);
+                Data.allProduct.get(pId).setPrice(d);
                 System.out.printf("Price has been updated to %.0f\n", d);
             } catch (NumberFormatException nfe) {
                 System.err.println("Invalid input!");
@@ -402,8 +402,8 @@ public class Member implements Serializable {
         System.out.println("Enter Member ID: ");
         Scanner command = new Scanner(System.in);
         String userID = command.nextLine();
-        if (Main.allMemberByID.containsKey(userID)) {
-            HashMap<String, Order> orders = Main.allMemberByID.get(userID).getOrders();
+        if (Data.allMemberByID.containsKey(userID)) {
+            HashMap<String, Order> orders = Data.allMemberByID.get(userID).getOrders();
             if (orders == null) {
                 System.out.println("No order placed");
             } else {
@@ -413,8 +413,8 @@ public class Member implements Serializable {
                     for (Product j : orderDetails.keySet()) {
                         System.out.printf("Product ID: %4s | Quantity: %4d | Price: %.0f\n",j.getpId(),orderDetails.get(j),j.getPrice() * Double.valueOf(orderDetails.get(j)));
                     }
-                    System.out.printf("Price before promotion: %.0f\n",Main.allOrder.get(i).getPricebf());
-                    System.out.printf("Total price after promotion: %.0f\n", Main.allOrder.get(i).getTotalPrice());
+                    System.out.printf("Price before promotion: %.0f\n",Data.allOrder.get(i).getPricebf());
+                    System.out.printf("Total price after promotion: %.0f\n", Data.allOrder.get(i).getTotalPrice());
                 }
             }
         } else {
@@ -426,11 +426,11 @@ public class Member implements Serializable {
         System.out.println("Enter order ID: ");
         Scanner command = new Scanner(System.in);
         String oId = command.nextLine();
-        if (Main.allOrder.containsKey(oId)) {
+        if (Data.allOrder.containsKey(oId)) {
             System.out.println("Enter order status for this order id " + oId + ":");
             command = new Scanner(System.in);
             String orderStatus = command.nextLine();
-            Main.allOrder.get(oId).setOrderStatus(orderStatus);
+            Data.allOrder.get(oId).setOrderStatus(orderStatus);
         } else {
             System.err.println("Order ID not existed!");
         }

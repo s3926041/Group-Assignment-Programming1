@@ -8,7 +8,7 @@ public class Product implements Serializable {
         this.pId = String.valueOf(totalProduct);
         this.price = price;
         this.cateId = cateId;
-        Main.allCategory.get(cateId).addProduct(this);
+        Data.allCategory.get(cateId).addProduct(this);
         totalProduct++;
     }
     private Double price;

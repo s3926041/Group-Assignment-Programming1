@@ -4,24 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    @SuppressWarnings("unchecked")
-    static <O> HashMap<String,O> readFile(String file) throws IOException, ClassNotFoundException {
-        try{
-            FileInputStream fis = new FileInputStream(file);
-            ObjectInputStream ois  = new ObjectInputStream(fis);
-            HashMap<String, O> ar = (HashMap<String, O>) ois.readObject();
-            ois.close();
-            return ar;
-        } catch (FileNotFoundException e){
-            return null;
-        }
-    }
-    static <O> void writeFile(HashMap<String,O> ar,String file) throws IOException {
-        FileOutputStream fos = new FileOutputStream(file);
-        ObjectOutputStream oos  = new ObjectOutputStream(fos);
-        oos.writeObject(ar);
-        oos.close();
-    }
+
     static void welcome() throws IOException, ClassNotFoundException {
         System.out.println(
                 """
@@ -35,27 +18,16 @@ public class Main {
                         You are a guest
                         """
         );
-        //READFILE
-        allMember = readFile("member.obj");
-        allCategory  =readFile("category.obj");
-        allProduct = readFile("product.obj");
-        allOrder = readFile("order.obj");
-        Member.setTotalUser(Main.allMember == null? 0 : Main.allMember.size());
-        Product.setTotalProduct(Main.allProduct == null? 0 : Main.allProduct.size());
-        Order.setTotalOrder(Main.allOrder == null ? 0: Main.allOrder.size());
-        Category.setTotalCate(Main.allCategory == null? 0  : Main.allCategory.size());
+        Data.read();
     }
     static void end() throws IOException {
-        writeFile(allMember,"member.obj");
-        writeFile(allOrder,"order.obj");
-        writeFile(allCategory,"category.obj");
-        writeFile(allProduct,"product.obj");
+        Data.write();
         System.out.println("Thanks for shopping with us!");
     }
     static void pressContinue(){
-        System.out.println("Press enter to continue");
-        try{System.in.read();}
-        catch(Exception e){}
+        System.out.println("Press Enter key to continue...");
+        Scanner s = new Scanner(System.in);
+        s.nextLine();
     }
     static void roleCommandGuest(){
         while(currentStatus){
@@ -167,28 +139,16 @@ public class Main {
     static Member currentUser =new Member(); //GUEST
     static boolean programStatus = true;
     static boolean currentStatus = true;
-    static HashMap<String,Member> allMember = new HashMap<>(); //USERNAME AND MEMBER
-    static HashMap<String,Member> allMemberByID = new HashMap<>(); //ID AND MEMBER //COPY OF ALLMEMBER
-    static HashMap<String, Order> allOrder = new HashMap<>(); //OID AND ORDER
-    static HashMap<String, Category> allCategory = new HashMap<>();//CATE ID AND CATEGORY
-    static HashMap<String, Product> allProduct = new HashMap<>(); //pID AND PRODUCT
-    public static void copy(){
-        allMemberByID =new HashMap<>();
-        for(String i : allMember.keySet()) {
-            allMemberByID.put(allMember.get(i).getUserId(), allMember.get(i));
-        }
-    }
-    static void start() throws IOException, ClassNotFoundException {
+
+    
+    public static void main(String[] args) throws IOException, ClassNotFoundException,ClassCastException {
         welcome();
-        copy();
         while(programStatus){
             currentStatus =true;
             switch (currentUser.getRole()) {
                 case (0) -> roleCommandGuest();
-
                 //MEMBER
                 case (1) -> roleCommandMember();
-
                 //ADMIN
                 case (2) -> roleCommandAdmin();
                 default -> {
@@ -196,38 +156,6 @@ public class Main {
                 }
             }
         }
-    }
-   static void createData() throws IOException {
-       Member admin = new Member("admin","root","");
-       admin.setRole(2);
-       allMember.put(admin.getUsername(),admin);
-       Member member = new Member("hungcpui","puiabc12","0889265054");
-       allMember.put(member.getUsername(),member);
-       copy();
-       Category c1 = new Category("laptop");
-       allCategory.put(c1.getCateId(),c1);
-       Category c2 = new Category("mobile phone");
-       allCategory.put(c2.getCateId(),c2);
-
-       Product p0 = new Product("Iphone 13",Double.parseDouble("100000"),"0");
-       allProduct.put(p0.getpId(),p0);
-       Product p2 = new Product("MSI2",Double.parseDouble("1200000"),"1");
-       allProduct.put(p2.getpId(),p2);
-
-       Product p3 = new Product("Iphone 14",Double.parseDouble("1400000"),"0");
-       allProduct.put(p3.getpId(),p3);
-       Product p4 = new Product("MSI3",Double.parseDouble("1300000"),"1");
-       allProduct.put(p4.getpId(),p4);
-
-       HashMap <Product,Integer> orderDetails = new HashMap<>();
-       orderDetails.put(p0,10);
-       Order o = new Order("0",orderDetails, p0.getPrice()*10,p0.getPrice()*10);
-   }
-    
-    public static void main(String[] args) throws IOException, ClassNotFoundException,ClassCastException {
-
-        // createData();
-        start();
         end();
     }
 }

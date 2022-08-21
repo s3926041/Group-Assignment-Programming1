@@ -23,9 +23,9 @@ public class Order implements Serializable {
         this.cId = cId;
         this.orderDetails = orderDetails;
         this.totalPrice = totalPrice;
-        Main.allOrder.put(this.oId,this);
-        Main.allMemberByID.get(cId).addOrder(this);
-        Main.allMember.get(Main.allMemberByID.get(cId).getUsername()).addOrder(this);
+        Data.allOrder.put(this.oId,this);
+        Data.allMemberByID.get(cId).addOrder(this);
+        Data.allMember.get(Data.allMemberByID.get(cId).getUsername()).addOrder(this);
         totalOrder++;
     }
    
