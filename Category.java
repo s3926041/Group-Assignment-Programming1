@@ -3,17 +3,26 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class Category implements Serializable {
-    private static int totalCate;
+    public static void setCurrentCateId(Integer currentCateId) {
+        Category.currentCateId = currentCateId;
+    }
+
+    private static Integer currentCateId=0;
     private String cateId;
     private String cateName;
     private HashMap<String,Product> productOfCategory = new HashMap<>();
     public Category(String cateName) {
-        this.cateId = String.valueOf(totalCate);
+        if(currentCateId == null){
+            currentCateId=0;
+        }
+        this.cateId = String.valueOf(currentCateId);
         this.cateName = cateName;
-        totalCate++;
+
+        currentCateId++;
+        Data.currentID.put("category",currentCateId);
     }
-    public static void setTotalCate(int totalCate) {
-        Category.totalCate = totalCate;
+    public void setCurrentCateId(int currentCateId) {
+        Category.currentCateId = currentCateId;
     }
     public String getCateId() {
         return cateId;
