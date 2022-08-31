@@ -9,13 +9,12 @@ public class Product implements Serializable {
     private static Integer currentProductId=0;
     public Product(String name, Double price, String cateId) {
         this.name = name.toUpperCase();
-
         this.price = price;
         this.cateId = cateId;
-        Data.allCategory.get(cateId).addProduct(this);
         this.pId = String.valueOf(currentProductId);
         currentProductId++;
         Data.currentID.put("product",currentProductId);
+        Data.allCategory.get(cateId).addProduct(this);
     }
     private Double price;
     private String name;
@@ -39,6 +38,9 @@ public class Product implements Serializable {
 
 
     public void getInformation() {
-        System.out.printf("ID: %3s | Name: %9s | Price: %9.0f | Category ID: %3s \n",this.pId,this.name,this.price,this.cateId);
+        System.out.println("Id: "+this.pId);
+        System.out.println("Name: "+this.name);
+        System.out.println("Price: "+ this.price);
+        System.out.println("Category: "+Data.allCategory.get(this.cateId).getCateName());
     }
 }
