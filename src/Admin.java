@@ -134,10 +134,11 @@ public class Admin extends User implements Serializable {
 
     @Override
     public void command() throws ClassCastException{
-        while(Main.currentStatus){
+
             System.out.println("""
                 INSTRUCTION FOR ADMIN
                 -1. QUIT
+                0. LOGOUT
                 1. VIEW ALL PRODUCTS\s
                 2. VIEW ALL ORDERS\s
                 3. VIEW ALL MEMBERS
@@ -150,9 +151,10 @@ public class Admin extends User implements Serializable {
             Scanner command = new Scanner(System.in);
             String commandString = command.nextLine();
             switch (commandString) {
-                case "-1" -> {
-                    Main.programStatus = false;
-                    Main.currentStatus = false;
+                case "-1" -> Main.currentStatus = false;
+                case "0" -> {
+                    Main.currentUser = new User();
+                    System.out.println("LOGGE DOUT!");
                 }
                 case "1" -> listProducts();
                 case "2" -> listOrder();
@@ -163,7 +165,7 @@ public class Admin extends User implements Serializable {
                 case "7" -> changeOrderStatus();
                 default -> System.err.println("Invalid command!\n");
             }
-            if(!commandString.equals("-1")) pressContinue();
-        }
+        if(!commandString.equals("-1") & !commandString.equals("0")) pressContinue();
+
     }
 }

@@ -59,6 +59,7 @@ public class Member extends User implements Serializable {
             } else {
                 System.out.println("Orders: No order yet");
             }
+            System.out.println();
     }
     @Override
     public void createOrder() {
@@ -86,7 +87,7 @@ public class Member extends User implements Serializable {
                     }
 
                     if (orderDetails.containsKey(pr)) {
-                        System.out.printf("There is already %.0f in the cart and you have added %d more",orderDetails.get(pr).get("quantity"), commandInt);
+                        System.out.printf("There is already %.0f in the cart and you have added %d more\n",orderDetails.get(pr).get("quantity"), commandInt);
                         hash = new HashMap<>(orderDetails.get(pr));
                         hash.put("quantity",hash.get("quantity")+Double.parseDouble(commandString));
                         orderDetails.put(pr,hash);
@@ -98,7 +99,7 @@ public class Member extends User implements Serializable {
 
                     }
                     curprice += pr.getPrice() * commandInt; //WITHOUT PROMOTION
-                    System.out.println("Buy another product (Press 1 to continue buying)");
+                    System.out.println("Buy another product (Enter 1 to continue buying any key else will finish the order)");
                     command = new Scanner(System.in);
                     commandString = command.nextLine();
                     Double curpricebf = curprice;
@@ -159,10 +160,10 @@ public class Member extends User implements Serializable {
     }
 @Override
     public void command(){
-        while(Main.currentStatus){
             System.out.println("""
                 INSTRUCTION FOR MEMBER
                 -1. QUIT
+                0. LOGOUT
                 1. VIEW ACCOUNT INFORMATION
                 2. CREATE ORDER
                 3. LIST PRODUCT
@@ -175,6 +176,10 @@ public class Member extends User implements Serializable {
             String commandString = command.nextLine();
             switch (commandString) {
                 case ("-1") -> Main.currentStatus = false;
+                case "0" -> {
+                    Main.currentUser = new User();
+                    System.out.println("LOGGED OUT!");
+                }
                 case ("1") -> viewInformation();
                 case ("2") -> createOrder();
                 case ("3") -> listProducts();
@@ -184,8 +189,7 @@ public class Member extends User implements Serializable {
                 case ("7") -> getOrderByOID();
                 default -> System.err.println("Invalid command!");
             }
-            if(!commandString.equals("-1")) pressContinue();
-        }
+            if(!commandString.equals("-1") & !commandString.equals("0")) pressContinue();
     }
 
 }

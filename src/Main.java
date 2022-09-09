@@ -11,8 +11,8 @@ public class Main {
                         Instructor: Mr. Minh Vu\s
                         Group: Group Name\s
                         s3926041, Nguyen Thanh Hung\s
-                        sXXXXXXX, Nguyen Huy Cao Son\s
-                        sXXXXXXX, Nguyen The Duc\s
+                        s3926634, Nguyen Huy Cao Son\s
+                        s3929899, Nguyen The Duc\s
                         You are a guest
                         """
         );
@@ -24,17 +24,12 @@ public class Main {
         System.out.println("Thanks for shopping with us!");
     }
     static User currentUser =new User(); //GUEST
-    static boolean programStatus = true;
     static boolean currentStatus = true;
-    static boolean login = false;
     static void run() throws IOException, ClassNotFoundException {
         welcome();
-//        System.out.println(Data.allUser);
-            currentUser.command();
-            if(login) {
-                currentStatus =true;
-                currentUser.command();
-            }
+          while(currentStatus){
+              currentUser.command();
+          }
         end();
     }
     public static void main(String[] args) throws IOException, ClassNotFoundException,ClassCastException {

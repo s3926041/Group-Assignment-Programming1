@@ -51,22 +51,22 @@ public class Order implements Serializable {
                 maxProductId =Math.max(maxProductId, p.getpId().length());
                 maxProductName =Math.max(maxProductName, p.getName().length());
                 maxQuantity =Math.max(maxQuantity, String.valueOf(orderDetails.get(p).get("quantity")).length()-2);
-                maxProductPrice =Math.max(maxProductPrice, String.valueOf(orderDetails.get(p).get("price")).length());
+                maxProductPrice =Math.max(maxProductPrice, String.valueOf(orderDetails.get(p).get("price")*orderDetails.get(p).get("quantity")).length());
             }
         maxProductId -= 9;
         maxProductName -= 3;
         maxQuantity -= 7;
-        maxProductPrice -=4;
-        int length = (maxProductId+10)+3+(maxProductName+4) +3 +(maxProductPrice+5) +3 + (maxQuantity+8) +2;
+        maxProductPrice -=8;
+        int length = (maxProductId+10)+3+(maxProductName+4) +3 +(maxProductPrice+9) +3 + (maxQuantity+8) +2;
         User.printLine(length);
-        System.out.printf("| %"+maxProductId+"sProduct ID | %"+maxProductName+"sName | %"+maxQuantity+"sQuantity | %"+maxProductPrice+"sPrice |\n", "","","","");
+        System.out.printf("| %"+maxProductId+"sProduct ID | %"+maxProductName+"sName | %"+maxQuantity+"sQuantity | %"+maxProductPrice+"sSub Price |\n", "","","","");
         User.printLine(length);
             for(Product p : orderDetails.keySet()){
-                System.out.printf("| %"+(maxProductId+10)+"s | %"+(maxProductName+4)+"s | %"+(maxQuantity+8)+".0f | %"+(maxProductPrice+5)+".2f |\n",   p.getpId(),p.getName(),orderDetails.get(p).get("quantity"),orderDetails.get(p).get("price"));
+                System.out.printf("| %"+(maxProductId+10)+"s | %"+(maxProductName+4)+"s | %"+(maxQuantity+8)+".0f | %"+(maxProductPrice+9)+".2f |\n",   p.getpId(),p.getName(),orderDetails.get(p).get("quantity"),orderDetails.get(p).get("price")*orderDetails.get(p).get("quantity"));
                 User.printLine(length);
         }
-        System.out.printf("Price before promotion: %.2f\n",this.pricebf);
-        System.out.printf("Price after promotion: %.2f\n",this.totalPrice);
+        System.out.printf("Total price before promotion: %.2f\n",this.pricebf);
+        System.out.printf("Total price after promotion: %.2f\n",this.totalPrice);
         System.out.println();
     }
 }

@@ -62,10 +62,6 @@ public class User implements Serializable {
                 input = new Scanner(System.in);
                 String password = input.nextLine();
                 if (checkValidGeneral(password)) {
-                    System.out.println("Re-enter password ");
-                    input = new Scanner(System.in);
-                    String repassword = input.nextLine();
-                    if (password.equals(repassword)) {
                         System.out.println("Enter full name (Length greater or equal to 4)" );
                         input = new Scanner(System.in);
                         String name = input.nextLine();
@@ -94,8 +90,6 @@ public class User implements Serializable {
                         else{
                             System.err.println("Name length must greater or equal to ");
                         }
-                    }
-
                 } else {
                     System.err.println("Password must have length greater than 4 and not having spaces!");
                 }
@@ -121,8 +115,6 @@ public class User implements Serializable {
                 Main.currentUser = Data.allUser.get(username);
                 System.out.println("LOGGED IN!");
                 System.out.println("HI " + username);
-                Main.login = true;
-                Main.currentStatus = false;
             } else
                 System.err.println("Wrong password!");
         } else
@@ -275,7 +267,7 @@ public class User implements Serializable {
     }
 
     public void command(){
-        while(Main.currentStatus){
+
             System.out.print("""
                 INSTRUCTION FOR GUEST
                 -1. QUIT
@@ -301,6 +293,6 @@ public class User implements Serializable {
 
             }
             if(!commandString.equals("-1")) pressContinue();
-        }
+
     }
 }
