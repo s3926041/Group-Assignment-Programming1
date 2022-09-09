@@ -36,11 +36,10 @@ public class Product implements Serializable {
         return this.price;
     }
 
-
     public void getInformation() {
         System.out.println("Id: "+this.pId);
         System.out.println("Name: "+this.name);
-        System.out.println("Price: "+ this.price);
+        System.out.printf("Price: %.2f\n", this.price);
         System.out.println("Category: "+Data.allCategory.get(this.cateId).getCateName());
     }
 }

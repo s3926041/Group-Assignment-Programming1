@@ -28,6 +28,7 @@ public class User implements Serializable {
         this.userName = userName;
         this.passWord = passWord;
         this.userId = String.valueOf(currentUserID);
+        this.role = role;
         currentUserID++;
         Data.currentID.put("user",currentUserID);
     }
@@ -49,50 +50,58 @@ public class User implements Serializable {
     //GUEST METHOD
     public void register() {
         System.out.println("Registering account");
-        System.out.println("Please enter username");
+        System.out.println("Enter username (Length greater or equal to 4 no spaces)");
         Scanner input = new Scanner(System.in);
         String username = input.nextLine();
 
-        //CHECK FOR EXISTED USERNAME
         if (checkValidGeneral(username)) {
             if (Data.allUser.containsKey(username)) {
                 System.out.println("Username existed!");
             } else {
-                System.out.println("Enter password: ");
+                System.out.println("Enter password (Length greater or equal to 4 no spaces)");
                 input = new Scanner(System.in);
                 String password = input.nextLine();
                 if (checkValidGeneral(password)) {
-                    System.out.println("Re-enter password: ");
+                    System.out.println("Re-enter password ");
                     input = new Scanner(System.in);
                     String repassword = input.nextLine();
                     if (password.equals(repassword)) {
-                        System.out.println("Enter full name: ");
+                        System.out.println("Enter full name (Length greater or equal to 4)" );
                         input = new Scanner(System.in);
                         String name = input.nextLine();
-                        System.out.println("Enter phone number: ");
-                        input = new Scanner(System.in);
-                        String phonenumber = input.nextLine();
-                        try {
-                            if (checkValidGeneral(phonenumber)) {
-                                int d = Integer.parseInt(phonenumber);
-                                User newMember = new Member(username, password,name, phonenumber);
-                                Data.allUser.put(username, newMember);
-                                Data.allUserByID.put(newMember.getUserId(), newMember);
-                                System.out.println("Account has been successfully registered!");
-                            } else {
-                                System.err.println("Invalid phone number");
+                        if(name.length() >= 4){
+                            System.out.println("Enter address (Length greater or equal to 4)");
+                            input = new Scanner(System.in);
+                            String address = input.nextLine();
+                            if(address.length() >= 4){
+                                System.out.println("Enter phone number (Only contain digits)");
+                                input = new Scanner(System.in);
+                                String phonenumber = input.nextLine();
+                                try {
+                                    int d = Integer.parseInt(phonenumber);
+                                    User newMember = new Member(username, password,name,address, String.valueOf(d));
+                                    Data.allUser.put(username, newMember);
+                                    Data.allUserByID.put(newMember.getUserId(), newMember);
+                                    System.out.println("Account has been successfully registered!");
+                                } catch (NumberFormatException nfe) {
+                                    System.err.println("Invalid phone number!");
+                                }
                             }
-                        } catch (NumberFormatException nfe) {
-                            System.err.println("Invalid phone number!");
+                            else{
+                                System.err.println("Address length must greater or equal to 4");
+                            }
+                        }
+                        else{
+                            System.err.println("Name length must greater or equal to ");
                         }
                     }
 
                 } else {
-                    System.err.println("Password must have length greater than 5 and not having space!");
+                    System.err.println("Password must have length greater than 4 and not having spaces!");
                 }
             }
         } else {
-            System.err.println("Invalid username!");
+            System.err.println("Username must have length greater than 4 and not having spaces!");
         }
     }
 
@@ -122,6 +131,8 @@ public class User implements Serializable {
 
 
     //GENERAL METHOD
+
+    //FORMAT TABLE
     public static void printLine(Integer length){
         System.out.print("|");
         for(int j = 0 ; j < length;j++){
@@ -133,22 +144,23 @@ public class User implements Serializable {
         HashMap<String, Product> allProduct = Data.allProduct;
         System.out.println("ALL PRODUCTS:");
 
-        int maxid = 2;
-        int maxname = 4;
-        int maxprice = 5;
+        int maxId = 2;
+        int maxName = 4;
+        int maxPrice = 5;
         for (String i : allProduct.keySet()) {
-            maxid = Math.max(maxid,i.length());
-            maxname = Math.max(maxname,allProduct.get(i).getName().length());
-            maxprice = Math.max(maxprice,String.valueOf(allProduct.get(i).getPrice()).length());
+            maxId = Math.max(maxId,i.length());
+            maxName = Math.max(maxName,allProduct.get(i).getName().length());
+            maxPrice = Math.max(maxPrice,String.valueOf(allProduct.get(i).getPrice()).length());
         }
-        maxname -=3;
-        maxprice -= 4;
-        printLine((maxid+2)+3+(maxname+4) +3 +(maxprice+5) +2);
-        System.out.printf("| %"+maxid+"sID | %"+maxname+"sName | %"+maxprice+"sPrice |\n", "","","");
-        printLine((maxid+2)+3+(maxname+4) +3 +(maxprice+5) +2);
+        maxName -=3;
+        maxPrice -= 4;
+        int length = (maxId+2)+3+(maxName+4) +3 +(maxPrice+5) +2;
+        printLine(length);
+        System.out.printf("| %"+maxId+"sID | %"+maxName+"sName | %"+maxPrice+"sPrice |\n", "","","");
+        printLine(length);
         for (String i : allProduct.keySet()) {
-            System.out.printf("| %"+(maxid+2)+"s | %"+(maxname+4)+"s | %"+(maxprice+5)+".2f |\n", i, allProduct.get(i).getName(), allProduct.get(i).getPrice());
-            printLine((maxid+2)+3+(maxname+4) +3 +(maxprice+5) +2);
+            System.out.printf("| %"+(maxId+2)+"s | %"+(maxName+4)+"s | %"+(maxPrice+5)+".2f |\n", i, allProduct.get(i).getName(), allProduct.get(i).getPrice());
+            printLine(length);
         }
     }
 
@@ -159,6 +171,7 @@ public class User implements Serializable {
         String pId = command.nextLine();
         if (allProduct.containsKey(pId)) {
             allProduct.get(pId).getInformation();
+            System.out.println();
         } else {
             System.err.println("Product ID not exist!");
         }
@@ -177,23 +190,24 @@ public class User implements Serializable {
 
         if (allCategory.containsKey(commandString)) {
             HashMap<String, Product> productOfCategory = new HashMap<>(allCategory.get(commandString).getProductOfCategory());
-            int maxid = 2;
-            int maxname = 4;
-            int maxprice = 5;
+            int maxId = 2;
+            int maxName = 4;
+            int maxPrice = 5;
             for (String i : productOfCategory.keySet()) {
-                maxid = Math.max(maxid,productOfCategory.get(i).getpId().length());
-                maxname = Math.max(maxname, productOfCategory.get(i).getName().length());
-                maxprice = Math.max(maxprice,String.valueOf(productOfCategory.get(i).getPrice()).length());
+                maxId = Math.max(maxId,productOfCategory.get(i).getpId().length());
+                maxName = Math.max(maxName, productOfCategory.get(i).getName().length());
+                maxPrice = Math.max(maxPrice,String.valueOf(productOfCategory.get(i).getPrice()).length());
             }
-            maxname -=3;
-            maxprice -= 4;
-            printLine((maxid+2)+3+(maxname+4) +3 +(maxprice+5) +2);
-            System.out.printf("| %"+maxid+"sID | %"+maxname+"sName | %"+maxprice+"sPrice |\n", "","","");
-            printLine((maxid+2)+3+(maxname+4) +3 +(maxprice+5) +2);
+            maxName -=3;
+            maxPrice -= 4;
+            int length = (maxId+2)+3+(maxName+4) +3 +(maxPrice+5) +2;
+            printLine(length);
+            System.out.printf("| %"+maxId+"sID | %"+maxName+"sName | %"+maxPrice+"sPrice |\n", "","","");
+            printLine(length);
 
             for (String i : productOfCategory.keySet()) {
-                System.out.printf("| %"+(maxid+2)+"s | %"+(maxname+4)+"s | %"+(maxprice+5)+".2f |\n", productOfCategory.get(i).getpId(), productOfCategory.get(i).getName(), productOfCategory.get(i).getPrice());
-                printLine((maxid+2)+3+(maxname+4) +3 +(maxprice+5) +2);
+                System.out.printf("| %"+(maxId+2)+"s | %"+(maxName+4)+"s | %"+(maxPrice+5)+".2f |\n", productOfCategory.get(i).getpId(), productOfCategory.get(i).getName(), productOfCategory.get(i).getPrice());
+                printLine(length);
             }
         } else {
             System.err.println("Category ID not existed");
@@ -208,38 +222,37 @@ public class User implements Serializable {
             row.add(pid);
             ar.add(row);
         }
-        ar.sort(Comparator.comparing(o -> o.get(0)));
+        ar.sort(Comparator.comparing(o -> Double.parseDouble(o.get(0))));
         try {
-
             System.out.println("Sorted products: ");
-            int maxid = 2;
-            int maxname = 4;
-            int maxprice = 5;
+            int maxId = 2;
+            int maxName = 4;
+            int maxPrice = 5;
             for (ArrayList<String> row : ar) {
                 Product p = Data.allProduct.get(row.get(1));
-                maxid = Math.max(maxid,p.getpId().length());
-                maxname = Math.max(maxname, p.getName().length());
-                maxprice = Math.max(maxprice,String.valueOf(row.get(0)).length());
+                maxId = Math.max(maxId,p.getpId().length());
+                maxName = Math.max(maxName, p.getName().length());
+                maxPrice = Math.max(maxPrice,String.valueOf(row.get(0)).length());
             }
-            maxname -=3;
-            maxprice -= 4;
-
-            printLine((maxid+2)+3+(maxname+4) +3 +(maxprice+5) +2);
-            System.out.printf("| %"+maxid+"sID | %"+maxname+"sName | %"+maxprice+"sPrice |\n", "","","");
-            printLine((maxid+2)+3+(maxname+4) +3 +(maxprice+5) +2);
+            maxName -=3;
+            maxPrice -= 4;
+            int length = (maxId+2)+3+(maxName+4) +3 +(maxPrice+5) +2;
+            printLine(length);
+            System.out.printf("| %"+maxId+"sID | %"+maxName+"sName | %"+maxPrice+"sPrice |\n", "","","");
+            printLine(length);
             for (ArrayList<String> row : ar) {
                 Product p = Data.allProduct.get(row.get(1));
-                System.out.printf("| %"+(maxid+2)+"s | %"+(maxname+4)+"s | %"+(maxprice+5)+".2f |\n",p.getpId(), p.getName(), Double.valueOf(row.get(0)));
-                printLine((maxid+2)+3+(maxname+4) +3 +(maxprice+5) +2);
+                System.out.printf("| %"+(maxId+2)+"s | %"+(maxName+4)+"s | %"+(maxPrice+5)+".2f |\n",p.getpId(), p.getName(), Double.valueOf(row.get(0)));
+                printLine(length);
             }
         } catch (Exception e) {
             System.err.println("ERROR");
         }
     }
 
-    protected String getPhoneNumber(){return null;};
-    protected String getMemberShip(){return null;};
-    protected String getName(){return null;};
+    protected String getPhoneNumber(){return null;}
+    protected String getMemberShip(){return null;}
+    protected String getName(){return null;}
     public void viewInformation(){}
     public void createOrder() {}
     public void getOrderByOID(){}
@@ -255,7 +268,7 @@ public class User implements Serializable {
     }
     public void addOrder(Order order) {
     }
-    public void pressContinue(){
+    public static void pressContinue(){
         System.out.println("Press Enter key to continue...");
         Scanner s = new Scanner(System.in);
         s.nextLine();

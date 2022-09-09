@@ -1,7 +1,6 @@
 // package untitled;
 
 import java.io.*;
-import java.util.*;
 
 public class Main {
     static void welcome() throws IOException, ClassNotFoundException {
@@ -18,6 +17,7 @@ public class Main {
                         """
         );
         Data.read();
+        User.pressContinue();
     }
     static void end() throws IOException {
         Data.write();
@@ -40,7 +40,6 @@ public class Main {
     public static void main(String[] args) throws IOException, ClassNotFoundException,ClassCastException {
 //        Data.createSampleData();
         run();
-
     }
 }
 

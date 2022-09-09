@@ -27,5 +27,4 @@ public class Category implements Serializable {
         return this.productOfCategory;
     }
     public void addProduct(Product p) { this.productOfCategory.put(p.getpId(),p); }
-
 }

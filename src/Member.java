@@ -6,8 +6,7 @@ import java.util.*;
 
 public class Member extends User implements Serializable {
 
-    private Double totalSpend = Double.valueOf(0);
-
+    private Double totalSpend = 0.0;
     private String name;
 
     @Override
@@ -26,13 +25,12 @@ public class Member extends User implements Serializable {
     }
 
     private String phoneNumber;
+    private String address;
     private HashMap<String, Order> orders = new HashMap<>(); //ORDER ID AND ORDER //ALL ORDER OF A PARTICULAR MEMBER
-
-
-
     private String memberShip = "Regular"; //MEMBERSHIP ARE SET AFTER CUSTOMER CREATE ORDER
-    public Member(String userName, String passWord,String name, String phoneNumber) {
+    public Member(String userName, String passWord,String name,String address, String phoneNumber) {
        super(userName,passWord,"member");
+       this.address = address;
        this.phoneNumber = phoneNumber;
        this.name = name;
     }
@@ -50,6 +48,7 @@ public class Member extends User implements Serializable {
             System.out.println("Id: " + getUserId());
             System.out.println("Username: " + getUsername());
             System.out.println("Phone number: " + this.phoneNumber);
+            System.out.println("Address: " + this.address);
             System.out.println("Membership: " + this.memberShip);
             if (!this.orders.isEmpty()) {
                 System.out.println("Orders:");
@@ -87,9 +86,9 @@ public class Member extends User implements Serializable {
                     }
 
                     if (orderDetails.containsKey(pr)) {
-                        System.out.println("There is already " + orderDetails.get(pr).get("quantity") + " in the cart and you have added " + commandInt + " more");
+                        System.out.printf("There is already %.0f in the cart and you have added %d more",orderDetails.get(pr).get("quantity"), commandInt);
                         hash = new HashMap<>(orderDetails.get(pr));
-                        hash.put("quantity",hash.get("quantity")+Double.valueOf(commandString));
+                        hash.put("quantity",hash.get("quantity")+Double.parseDouble(commandString));
                         orderDetails.put(pr,hash);
                     } else{
                         hash = new HashMap<>();
@@ -103,31 +102,26 @@ public class Member extends User implements Serializable {
                     command = new Scanner(System.in);
                     commandString = command.nextLine();
                     Double curpricebf = curprice;
-                    if (commandString.equals("1")) {
-                        continue;
-                    } else {
+                    if (!commandString.equals("1")) {
                         status = false;
-                        System.out.printf("Here are you order:\nOrder ID %d\n",Data.allOrder.size());
-                        for (Product p : orderDetails.keySet()) {
-                            System.out.printf("Product ID: %4s | Name: %12s | Quantity: %4.0f | Price: %10.2f\n", p.getpId(), p.getName(),orderDetails.get(p).get("quantity"), orderDetails.get(p).get("price"));
-                        }
-                        System.out.println();
-                        if (this.memberShip.equals("none")) {
-                            System.out.println("There is no promotion for normal member");
-                        } else if (this.memberShip.equals("Platinum")) {
-                            System.out.println("You are getting 15% discount as an Platinum member!");
-                            curprice *= 0.85;
-                        } else if (this.memberShip.equals("Gold")) {
-                            System.out.println("You are getting 10% discount as an Gold member!");
-                            curprice *= 0.90;
-                        } else if (this.memberShip.equals("Silver")) {
-                            System.out.println("You are getting 5% discount as an Silver member!");
-                            curprice *= 0.95;
-                        }
                         Order newOrder = new Order(this, orderDetails, curprice, curpricebf);
+                        newOrder.getInfo(false);
+                        switch (this.memberShip) {
+                            case "Regular" -> System.out.println("There is no promotion for Regular member");
+                            case "Platinum" -> {
+                                System.out.println("You are getting 15% discount as an Platinum member!");
+                                curprice *= 0.85;
+                            }
+                            case "Gold" -> {
+                                System.out.println("You are getting 10% discount as an Gold member!");
+                                curprice *= 0.90;
+                            }
+                            case "Silver" -> {
+                                System.out.println("You are getting 5% discount as an Silver member!");
+                                curprice *= 0.95;
+                            }
+                        }
                         this.totalSpend += curprice;
-                        System.out.printf("Total price before promotion: %.2f\n", curpricebf);
-                        System.out.printf("Total price after promotion: %.2f\n", curprice);
                         if (this.totalSpend >= 25000000.0) {
                             this.memberShip = "Platinum";
                         }else
@@ -138,7 +132,6 @@ public class Member extends User implements Serializable {
                             this.memberShip = "Silver";
                         }    
                     }
-
                 } catch (NumberFormatException nfe) {
                     status = false;
                     System.err.println("Invalid input!");
@@ -157,18 +150,10 @@ public class Member extends User implements Serializable {
             System.out.println("Enter Order ID: ");
             Scanner command = new Scanner(System.in);
             String commandString = command.nextLine();
-
             if (this.orders.containsKey(commandString)) {
-                HashMap<Product, HashMap<String,Double>> orderDetails;
-                orderDetails = this.orders.get(commandString).getOrderDetails();
-                System.out.println("Order ID: " + commandString);
-                for (Product j : orderDetails.keySet()) {
-                    System.out.printf("Product ID: %3s | Quantity: %4d | Price: %.0f\n",j.getpId(),orderDetails.get(j),j.getPrice() * Double.valueOf(String.valueOf(orderDetails.get(j))));
-                }
-                System.out.printf("Price before promotion: %.0f\n",this.orders.get(commandString).getPricebf());
-                System.out.printf("Total price after promotion: %.0f\n", this.orders.get(commandString).getTotalPrice());
+                this.orders.get(commandString).getInfo(true);
             } else {
-                System.err.println("Order ID not exist");
+                System.err.println("Order ID not exist or you do not have permission to view it!");
             }
         }
     }
@@ -189,9 +174,7 @@ public class Member extends User implements Serializable {
             Scanner command = new Scanner(System.in);
             String commandString = command.nextLine();
             switch (commandString) {
-                case ("-1") -> {
-                    Main.currentStatus = false;
-                }
+                case ("-1") -> Main.currentStatus = false;
                 case ("1") -> viewInformation();
                 case ("2") -> createOrder();
                 case ("3") -> listProducts();

@@ -1,5 +1,4 @@
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -15,7 +14,6 @@ public class Admin extends User implements Serializable {
     }
     @Override
     public void listMember() {
-        System.out.println("ALL MEMBERS:");
         int maxusername = 8;
         int maxmembership = 10;
         int maxphone = 5;
@@ -35,13 +33,14 @@ public class Admin extends User implements Serializable {
         maxphone -= 4;
         maxid -=1;
         maxname -=3;
-        printLine((maxid+2)+3+(maxusername+8)+3+(maxname+4) +3 +(maxphone+5)+3+(maxmembership+10) +2);
+        int length = (maxid+2)+3+(maxusername+8)+3+(maxname+4) +3 +(maxphone+5)+3+(maxmembership+10) +2;
+        printLine(length);
         System.out.printf("| %"+maxid+"sID | %"+maxusername+"sUsername | %"+maxname+"sName | %" + maxphone +"sPhone | %" +maxmembership +"sMembership |\n", "","","","","");
-        printLine((maxid+2)+3+(maxusername+8)+3+(maxname+4) +3 +(maxphone+5)+3+(maxmembership+10) +2);
+        printLine(length);
         for(String i : Data.allUser.keySet()){
             if(Data.allUser.get(i).getRole().equals("member")){
                 System.out.printf("| %"+(maxid+2)+"s | %"+(maxusername+8)+"s | %"+(maxname+4)+"s | %"+ (maxphone+5)+"s | %" +(maxmembership+10) + "s |\n",Data.allUser.get(i).getUserId(),i,Data.allUser.get(i).getName(),Data.allUser.get(i).getPhoneNumber(),Data.allUser.get(i).getMemberShip() );
-                printLine((maxid+2)+3+(maxusername+8)+3+(maxname+4) +3 +(maxphone+5)+3+(maxmembership+10) +2);
+                printLine(length);
             }
         }
     }
@@ -51,17 +50,24 @@ public class Admin extends User implements Serializable {
         for (String i : Data.allCategory.keySet()) {
             System.out.println("Category ID :" + i + " Name: " + Data.allCategory.get(i).getCateName());
         }
-        System.out.println("Enter product's category ID:");
+        System.out.println("Enter new product's category ID:");
         Scanner command = new Scanner(System.in);
         String category = command.nextLine();
         if (!Data.allCategory.containsKey(category)) {
-            System.err.println("Category ID not existed");
+            System.err.println("Category ID not existed!");
             return;
         }
-        System.out.println("Enter product name: ");
+        System.out.println("Enter new product name: ");
         command = new Scanner(System.in);
         String name = command.nextLine();
-        System.out.println("Enter product price:");
+        for(String pid: Data.allProduct.keySet()){
+            if(Data.allProduct.get(pid).getName().equals(name.toUpperCase())){
+                System.out.println("Product name existed !");
+                return;
+            }
+        }
+
+        System.out.println("Enter new product price:");
         command = new Scanner(System.in);
         String price = command.nextLine();
         try {
@@ -81,11 +87,11 @@ public class Admin extends User implements Serializable {
         String pId = command.nextLine();
         if (Data.allProduct.containsKey(pId)) {
             try {
-                System.out.printf("The current price are %11.0f \n Enter update price:", Data.allProduct.get(pId).getPrice());
+                System.out.printf("The current price are %11.2f \n Enter update price:", Data.allProduct.get(pId).getPrice());
                 command = new Scanner(System.in);
                 Double d = Double.parseDouble(command.nextLine());
                 Data.allProduct.get(pId).setPrice(d);
-                System.out.printf("Price has been updated to %.0f\n", d);
+                System.out.printf("Price has been updated to %.2f\n", d);
             } catch (NumberFormatException nfe) {
                 System.err.println("Invalid input!");
             }
@@ -104,13 +110,7 @@ public class Admin extends User implements Serializable {
                 System.out.println("No order placed");
             } else {
                 for (String i : orders.keySet()) {
-                    HashMap<Product, HashMap<String,Double>> orderDetails = orders.get(i).getOrderDetails();
-                    System.out.println("Order ID " + i+ ":");
-                    for (Product j : orderDetails.keySet()) {
-                        System.out.printf("Product ID: %4s | Quantity: %4d | Price: %.0f\n",j.getpId(),Integer.parseInt(String.valueOf(orderDetails.get(j).get(0))),Double.valueOf(orderDetails.get(j).get(1)) * Double.valueOf(orderDetails.get(j).get(0)));
-                    }
-                    System.out.printf("Price before promotion: %.0f\n",Data.allOrder.get(i).getPricebf());
-                    System.out.printf("Total price after promotion: %.0f\n\n", Data.allOrder.get(i).getTotalPrice());
+                    orders.get(i).getInfo(true);
                 }
             }
         } else {
@@ -154,7 +154,7 @@ public class Admin extends User implements Serializable {
                     Main.programStatus = false;
                     Main.currentStatus = false;
                 }
-                case "1" -> super.listProducts();
+                case "1" -> listProducts();
                 case "2" -> listOrder();
                 case "3" -> listMember();
                 case "4" -> addNewProduct();
@@ -162,9 +162,8 @@ public class Admin extends User implements Serializable {
                 case "6" -> getOrdersByMemberID();
                 case "7" -> changeOrderStatus();
                 default -> System.err.println("Invalid command!\n");
-
             }
-            if(!commandString.equals("-1")) super.pressContinue();
+            if(!commandString.equals("-1")) pressContinue();
         }
     }
 }

@@ -1,6 +1,5 @@
 // package untitled;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Order implements Serializable {
@@ -9,15 +8,11 @@ public class Order implements Serializable {
     }
     private static Integer currentOrderId=0;
     private Double totalPrice;
-    public Double getPricebf() {
-        return pricebf;
-    }
     private Double pricebf;
     private String oId;
     private User member;
     private HashMap<Product, HashMap<String,Double>>  orderDetails; // PRODUCT AND (QUANTITY AND CURRENT PRODUCT PRICE)
     private String orderStatus="UNPAID";
-
     public Order(User member,HashMap<Product, HashMap<String,Double>>   orderDetails,Double totalPrice,Double pricebf) {
         this.pricebf = pricebf;
         this.member = member;
@@ -46,15 +41,11 @@ public class Order implements Serializable {
     public void getInfo(boolean req){
         System.out.println("Order ID: " + this.oId);
         if(req) System.out.println("Customer ID: " + this.member.getUserId());
-        System.out.printf("Price before promotion: %.2f\n",this.pricebf);
-        System.out.printf("Price after promotion: %.2f\n",this.totalPrice);
         System.out.println("Details: ");
-
         int maxQuantity = 8;
         int maxProductId = 10;
         int maxProductName = 4;
         int maxProductPrice = 5;
-
         //product id product price quantity product name order status length
             for(Product p : orderDetails.keySet()){
                 maxProductId =Math.max(maxProductId, p.getpId().length());
@@ -66,14 +57,16 @@ public class Order implements Serializable {
         maxProductName -= 3;
         maxQuantity -= 7;
         maxProductPrice -=4;
-        User.printLine((maxProductId+10)+3+(maxProductName+4) +3 +(maxProductPrice+5) +3 + (maxQuantity+8) +2);
+        int length = (maxProductId+10)+3+(maxProductName+4) +3 +(maxProductPrice+5) +3 + (maxQuantity+8) +2;
+        User.printLine(length);
         System.out.printf("| %"+maxProductId+"sProduct ID | %"+maxProductName+"sName | %"+maxQuantity+"sQuantity | %"+maxProductPrice+"sPrice |\n", "","","","");
-        User.printLine((maxProductId+10)+3+(maxProductName+4) +3 +(maxProductPrice+5) +3 + (maxQuantity+8) +2);
+        User.printLine(length);
             for(Product p : orderDetails.keySet()){
                 System.out.printf("| %"+(maxProductId+10)+"s | %"+(maxProductName+4)+"s | %"+(maxQuantity+8)+".0f | %"+(maxProductPrice+5)+".2f |\n",   p.getpId(),p.getName(),orderDetails.get(p).get("quantity"),orderDetails.get(p).get("price"));
-                User.printLine((maxProductId+10)+3+(maxProductName+4) +3 +(maxProductPrice+5) +3 + (maxQuantity+8) +2);
-
+                User.printLine(length);
         }
+        System.out.printf("Price before promotion: %.2f\n",this.pricebf);
+        System.out.printf("Price after promotion: %.2f\n",this.totalPrice);
         System.out.println();
     }
 }

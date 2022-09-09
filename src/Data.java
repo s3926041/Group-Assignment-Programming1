@@ -7,7 +7,7 @@ public class Data  {
     static HashMap<String, Order> allOrder = new HashMap<>(); //OID AND ORDER
     static HashMap<String, Category> allCategory = new HashMap<>();//CATE ID AND CATEGORY
     static HashMap<String, Product> allProduct = new HashMap<>(); //pID AND PRODUCT
-    static HashMap<String, Integer> currentID = new HashMap<>(); //pID AND PRODUCT
+    static HashMap<String, Integer> currentID = new HashMap<>(); //ALL CLASS CURRENT ID
     static <O> HashMap<String,O> readFile(String file) throws IOException, ClassNotFoundException {
         try{
             FileInputStream fis = new FileInputStream(file);
@@ -65,14 +65,13 @@ public class Data  {
     }
 
     static void createSampleData() throws IOException {
-        System.out.println(User.getCurrentUserID());
         User admin = new Admin("admin","root");
         allUser.put("admin",admin);
-        User a = new Member("user1","user1","user1","0123456789");
+        User a = new Member("user1","user1","user1","Ha Noi","0123456789");
         allUser.put(a.getUsername(),a);
-        a = new Member("user2","user2","user2","0123456788");
+        a = new Member("user2","user2","user2","Ha Noi","0123456788");
         allUser.put(a.getUsername(),a);
-        a = new Member("user3","user3","user3","0123456787");
+        a = new Member("user3","user3","user3","Ha Noi","0123456787");
         allUser.put(a.getUsername(),a);
 
         Category c = new Category("laptop"); //ID 0
@@ -91,13 +90,27 @@ public class Data  {
         p = new Product("MSI3",Double.parseDouble("1300000"),"0");
         allProduct.put(p.getpId(),p);
 
-        p = new Product("Iphone 13",Double.parseDouble("100000"),"1");
+        p = new Product("SAMSUNG 22",Double.parseDouble("1000000"),"1");
         allProduct.put(p.getpId(),p);
         p = new Product("Iphone 14",Double.parseDouble("1400000"),"1");
         allProduct.put(p.getpId(),p);
 
-        write();
+        p = new Product("Arctic 3",Double.parseDouble("32000"),"2");
+        allProduct.put(p.getpId(),p);
+        p = new Product("HyperX Cloud",Double.parseDouble("400000"),"2");
+        allProduct.put(p.getpId(),p);
 
+        p = new Product("Leopold 900",Double.parseDouble("80000"),"3");
+        allProduct.put(p.getpId(),p);
+        p = new Product("Razer Huntsman",Double.parseDouble("900000"),"3");
+        allProduct.put(p.getpId(),p);
+
+        p = new Product("Zowie EC2",Double.parseDouble("300000"),"4");
+        allProduct.put(p.getpId(),p);
+        p = new Product("Logitech G-PRO",Double.parseDouble("420000"),"4");
+        allProduct.put(p.getpId(),p);
+        write();
+        System.out.println("Data successfully created!");
     }
 }
 
