@@ -154,7 +154,7 @@ public class Admin extends User implements Serializable {
                 case "-1" -> Main.currentStatus = false;
                 case "0" -> {
                     Main.currentUser = new User();
-                    System.out.println("LOGGE DOUT!");
+                    System.out.println("LOGGED OUT!");
                 }
                 case "1" -> listProducts();
                 case "2" -> listOrder();
