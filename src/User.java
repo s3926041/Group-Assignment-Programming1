@@ -56,7 +56,7 @@ public class User implements Serializable {
 
         if (checkValidGeneral(username)) {
             if (Data.allUser.containsKey(username)) {
-                System.out.println("Username existed!");
+                System.err.println("Username existed!");
             } else {
                 System.out.println("Enter password (Length greater or equal to 4 no spaces)");
                 input = new Scanner(System.in);
@@ -70,18 +70,19 @@ public class User implements Serializable {
                             input = new Scanner(System.in);
                             String address = input.nextLine();
                             if(address.length() >= 4){
-                                System.out.println("Enter phone number (Only contain digits)");
+                                System.out.println("Enter phone number (Only contain digits, Length greater or equal to 4)");
                                 input = new Scanner(System.in);
-                                String phonenumber = input.nextLine();
-                                try {
-                                    int d = Integer.parseInt(phonenumber);
-                                    User newMember = new Member(username, password,name,address, String.valueOf(d));
-                                    Data.allUser.put(username, newMember);
-                                    Data.allUserByID.put(newMember.getUserId(), newMember);
-                                    System.out.println("Account has been successfully registered!");
-                                } catch (NumberFormatException nfe) {
-                                    System.err.println("Invalid phone number!");
-                                }
+                                String phoneNumber = input.nextLine();
+                                 if(phoneNumber.matches("[0-9]+") & phoneNumber.length() >= 4) {
+                                     User newMember = new Member(username, password, name, address, phoneNumber);
+                                     Data.allUser.put(username, newMember);
+                                     Data.allUserByID.put(newMember.getUserId(), newMember);
+                                     System.out.println("Account has been successfully registered!");
+                                 }
+                                 else{
+                                     System.err.println("Invalid phone number");
+                                 }
+
                             }
                             else{
                                 System.err.println("Address length must greater or equal to 4");

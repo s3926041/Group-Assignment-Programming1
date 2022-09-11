@@ -14,7 +14,7 @@ public class Main {
                         s3926634, Nguyen Huy Cao Son\s
                         s3929899, Nguyen The Duc\s
                         You are a guest
-                        """
+                """
         );
         Data.read();
         User.pressContinue();
