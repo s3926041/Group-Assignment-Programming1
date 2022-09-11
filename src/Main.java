@@ -9,7 +9,7 @@ public class Main {
                         COSC2081 GROUP ASSIGNMENT\s
                         STORE ORDER MANAGEMENT SYSTEM\s
                         Instructor: Mr. Minh Vu\s
-                        Group: Group Name\s
+                        Group: Astraloss\s
                         s3926041, Nguyen Thanh Hung\s
                         s3926634, Nguyen Huy Cao Son\s
                         s3929899, Nguyen The Duc\s
