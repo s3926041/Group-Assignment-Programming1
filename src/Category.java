@@ -6,7 +6,6 @@ public class Category implements Serializable {
     public static void setCurrentCateId(Integer currentCateId) {
         Category.currentCateId = currentCateId;
     }
-
     private static Integer currentCateId=0;
     private String cateId;
     private String cateName;

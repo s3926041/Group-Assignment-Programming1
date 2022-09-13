@@ -166,6 +166,5 @@ public class Admin extends User implements Serializable {
                 default -> System.err.println("Invalid command!\n");
             }
         if(!commandString.equals("-1") & !commandString.equals("0")) pressContinue();
-
     }
 }

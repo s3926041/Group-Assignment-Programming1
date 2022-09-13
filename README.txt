@@ -3,7 +3,6 @@ username: admin
 password: root
 
 Customer accounts:
-
 username: user1
 password: user1
 

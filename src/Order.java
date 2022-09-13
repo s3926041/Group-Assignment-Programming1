@@ -45,7 +45,7 @@ public class Order implements Serializable {
         int maxQuantity = 8;
         int maxProductId = 10;
         int maxProductName = 4;
-        int maxProductPrice = 5;
+        int maxProductPrice = 9;
         //product id product price quantity product name order status length
             for(Product p : orderDetails.keySet()){
                 maxProductId =Math.max(maxProductId, p.getpId().length());
@@ -56,7 +56,7 @@ public class Order implements Serializable {
         maxProductId -= 9;
         maxProductName -= 3;
         maxQuantity -= 7;
-        maxProductPrice -=8;
+        maxProductPrice -=6;
         int length = (maxProductId+10)+3+(maxProductName+4) +3 +(maxProductPrice+9) +3 + (maxQuantity+8) +2;
         User.printLine(length);
         System.out.printf("| %"+maxProductId+"sProduct ID | %"+maxProductName+"sName | %"+maxQuantity+"sQuantity | %"+maxProductPrice+"sSub Price |\n", "","","","");
