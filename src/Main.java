@@ -1,5 +1,3 @@
-// package untitled;
-
 import java.io.*;
 
 public class Main {
@@ -25,16 +23,12 @@ public class Main {
     }
     static User currentUser =new User(); //GUEST
     static boolean currentStatus = true;
-    static void run() throws IOException, ClassNotFoundException {
-        welcome();
-          while(currentStatus){
-              currentUser.command();
-          }
-        end();
-    }
     public static void main(String[] args) throws IOException, ClassNotFoundException,ClassCastException {
-//        Data.createSampleData();
-        run();
+        welcome();
+        while(currentStatus){
+            currentUser.command();
+        }
+        end();
     }
 }
 

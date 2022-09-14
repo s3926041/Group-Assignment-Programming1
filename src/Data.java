@@ -1,7 +1,11 @@
+
 import java.io.*;
 import java.util.HashMap;
 
 public class Data  {
+    public static void main(String[] args) throws IOException {
+        createSampleData();
+    }
     static HashMap<String,User> allUser = new HashMap<>(); //USERNAME AND User
     static HashMap<String,User> allUserByID = new HashMap<>(); //ID AND User //COPY OF ALLUser
     static HashMap<String, Order> allOrder = new HashMap<>(); //OID AND ORDER
@@ -65,50 +69,39 @@ public class Data  {
     }
 
     static void createSampleData() throws IOException {
-        User admin = new Admin("admin","root");
-        allUser.put("admin",admin);
-        User a = new Member("user1","user1","user1","Ha Noi","0123456789");
-        allUser.put(a.getUsername(),a);
-        a = new Member("user2","user2","user2","Ha Noi","0123456788");
-        allUser.put(a.getUsername(),a);
-        a = new Member("user3","user3","user3","Ha Noi","0123456787");
-        allUser.put(a.getUsername(),a);
+        new Admin("admin","root");
+        new Member("user1","user1","user1","Ha Noi","0123456789");
+        new Member("user2","user2","user2","Ha Noi","0123456788");
+        new Member("user3","user3","user3","Ha Noi","0123456787");
 
-        Category c = new Category("laptop"); //ID 0
-        allCategory.put(c.getCateId(),c);
-        c = new Category("mobile phone");//ID 1
-        allCategory.put(c.getCateId(),c);
-        c = new Category("headphone"); // ID 2
-        allCategory.put(c.getCateId(),c);
-        c = new Category("keyboard");//ID 3
-        allCategory.put(c.getCateId(),c);
-        c = new Category("mouse"); //ID 4
-        allCategory.put(c.getCateId(),c);
+        new Category("laptop"); //ID 0
+        new Category("mobile phone");//ID 1
+        new Category("headphone"); // ID 2
+        new Category("keyboard");//ID 3
+        new Category("mouse"); //ID 4
 
-        Product  p = new Product("MSI2",Double.parseDouble("1200000"),"0");
-        allProduct.put(p.getpId(),p);
-        p = new Product("MSI3",Double.parseDouble("1300000"),"0");
-        allProduct.put(p.getpId(),p);
+        new Product("MSI2",Double.parseDouble("1200000"),"0");
+        new Product("MSI3",Double.parseDouble("1300000"),"0");
 
-        p = new Product("SAMSUNG 22",Double.parseDouble("1000000"),"1");
-        allProduct.put(p.getpId(),p);
-        p = new Product("Iphone 14",Double.parseDouble("1400000"),"1");
-        allProduct.put(p.getpId(),p);
+        new Product("SAMSUNG 22",Double.parseDouble("1000000"),"1");
+        new Product("Iphone 14",Double.parseDouble("1400000"),"1");
 
-        p = new Product("Arctic 3",Double.parseDouble("32000"),"2");
-        allProduct.put(p.getpId(),p);
-        p = new Product("HyperX Cloud",Double.parseDouble("400000"),"2");
-        allProduct.put(p.getpId(),p);
+        new Product("Arctic 3",Double.parseDouble("32000"),"2");
+        new Product("HyperX Cloud",Double.parseDouble("400000"),"2");
 
-        p = new Product("Leopold 900",Double.parseDouble("80000"),"3");
-        allProduct.put(p.getpId(),p);
-        p = new Product("Razer Huntsman",Double.parseDouble("900000"),"3");
-        allProduct.put(p.getpId(),p);
+        new Product("Leopold 900",Double.parseDouble("80000"),"3");
+        new Product("Razer Huntsman",Double.parseDouble("900000"),"3");
 
-        p = new Product("Zowie EC2",Double.parseDouble("300000"),"4");
-        allProduct.put(p.getpId(),p);
-        p = new Product("Logitech G-PRO",Double.parseDouble("420000"),"4");
-        allProduct.put(p.getpId(),p);
+        new Product("Zowie EC2",Double.parseDouble("300000"),"4");
+        new Product("Logitech G-PRO",Double.parseDouble("420000"),"4");
+
+        HashMap<String,Double> hash = new HashMap<>();
+        hash.put("price",allProduct.get("0").getPrice());
+        hash.put("quantity",30.0);
+        Double price = hash.get("quantity") * hash.get("price");
+        HashMap<Product, HashMap<String,Double>>  orderDetails = new HashMap<>();
+        orderDetails.put(allProduct.get("0"),hash);
+        new Order(allUser.get("user1"),orderDetails,price,price);
         write();
         System.out.println("Data successfully created!");
     }

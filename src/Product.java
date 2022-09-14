@@ -1,4 +1,4 @@
-// package untitled;
+
 import java.io.*;
 
 public class Product implements Serializable {
@@ -15,6 +15,7 @@ public class Product implements Serializable {
         currentProductId++;
         Data.currentID.put("product",currentProductId);
         Data.allCategory.get(cateId).addProduct(this);
+        Data.allProduct.put(this.getpId(), this);
     }
     private Double price;
     private String name;

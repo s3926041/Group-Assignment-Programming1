@@ -1,9 +1,14 @@
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Scanner;
 
+
 public class Admin extends User implements Serializable {
-    public Admin(String userName, String passWord) {super(userName,passWord,"admin");}
+    public Admin(String userName, String passWord) {
+        super(userName,passWord,"admin");
+        Data.allUser.put(userName,this);
+    }
     @Override
     public void listOrder() {
         System.out.println("ALL ORDERS:");
@@ -72,8 +77,7 @@ public class Admin extends User implements Serializable {
         String price = command.nextLine();
         try {
             Double priceDouble = Double.parseDouble(price);
-            Product p = new Product(name, priceDouble, category);
-            Data.allProduct.put(p.getpId(), p);
+            new Product(name, priceDouble, category);
             System.out.println("Product added successfully");
         } catch (NumberFormatException nfe) {
             System.err.println("Invalid price input!");
@@ -134,7 +138,6 @@ public class Admin extends User implements Serializable {
 
     @Override
     public void command() throws ClassCastException{
-
             System.out.println("""
                 INSTRUCTION FOR ADMIN
                 -1. QUIT

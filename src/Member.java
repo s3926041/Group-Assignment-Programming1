@@ -1,5 +1,3 @@
-// package untitled;
-
 import java.io.Serializable;
 
 import java.util.*;
@@ -33,6 +31,7 @@ public class Member extends User implements Serializable {
        this.address = address;
        this.phoneNumber = phoneNumber;
        this.name = name;
+       Data.allUser.put(userName,this);
     }
     public HashMap<String, Order> getOrders() {
         return orders;

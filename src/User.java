@@ -1,3 +1,4 @@
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -146,7 +147,6 @@ public class User implements Serializable {
         }
         ar.sort(Comparator.comparing(o -> Double.parseDouble(o.get(1))));
         try {
-            System.out.println("Sorted products: ");
             int maxId = 2;
             int maxName = 4;
             int maxPrice = 5;
@@ -170,28 +170,6 @@ public class User implements Serializable {
         } catch (Exception e) {
             System.err.println("ERROR");
         }
-//        for (String i : allProduct.keySet()) {
-//            System.out.println(i);
-//        }
-//        int maxId = 2;
-//        int maxName = 4;
-//        int maxPrice = 5;
-//        for (String i : allProduct.keySet()) {
-//            maxId = Math.max(maxId,i.length());
-//            maxName = Math.max(maxName,allProduct.get(i).getName().length());
-//            maxPrice = Math.max(maxPrice,String.valueOf(allProduct.get(i).getPrice()).length());
-//        }
-//
-//        maxName -=3;
-//        maxPrice -= 4;
-//        int length = (maxId+2)+3+(maxName+4) +3 +(maxPrice+5) +2;
-//        printLine(length);
-//        System.out.printf("| %"+maxId+"sID | %"+maxName+"sName | %"+maxPrice+"sPrice |\n", "","","");
-//        printLine(length);
-//        for (String i : allProduct.keySet()) {
-//            System.out.printf("| %"+(maxId+2)+"s | %"+(maxName+4)+"s | %"+(maxPrice+5)+".2f |\n", i, allProduct.get(i).getName(), allProduct.get(i).getPrice());
-//            printLine(length);
-//        }
     }
 
     public void viewProductDetails() {
@@ -333,6 +311,5 @@ public class User implements Serializable {
 
             }
             if(!commandString.equals("-1")) pressContinue();
-
     }
 }

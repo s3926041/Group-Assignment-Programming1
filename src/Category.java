@@ -1,4 +1,4 @@
-// package untitled;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -15,6 +15,7 @@ public class Category implements Serializable {
         this.cateName = cateName;
         currentCateId++;
         Data.currentID.put("category",currentCateId);
+        Data.allCategory.put(this.cateId,this);
     }
     public String getCateId() {
         return cateId;
