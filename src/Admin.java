@@ -113,7 +113,7 @@ public class Admin extends User implements Serializable {
         String userID = command.nextLine();
         if (Data.allUserByID.containsKey(userID)) {
             HashMap<String, Order> orders = Data.allUserByID.get(userID).getOrders();
-            if (orders == null) {
+            if (orders == null || orders.isEmpty()) {
                 System.out.println("No order placed");
             } else {
                 for (String i : orders.keySet()) {
