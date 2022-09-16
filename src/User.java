@@ -309,7 +309,6 @@ public class User implements Serializable {
                 case ("5") -> listProductsbyCate();
                 case ("6") -> sortProduct();
                 default -> System.err.println("Invalid command!");
-
             }
             if(!commandString.equals("-1")) pressContinue();
     }

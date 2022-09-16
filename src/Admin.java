@@ -1,5 +1,7 @@
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -19,13 +21,19 @@ public class Admin extends User implements Serializable {
     }
     @Override
     public void listMember() {
+        HashMap<String, User> allUser = Data.allUser;
+        ArrayList<ArrayList<String>> ar = new ArrayList<>();
         int maxusername = 8;
         int maxmembership = 10;
         int maxaddress = 7;
         int maxphone = 5;
         int maxid = 2;
         int maxname = 4;
-        for(String i : Data.allUser.keySet()){
+        for (String i : allUser.keySet()) {
+            ArrayList<String> row = new ArrayList<>();
+            row.add(allUser.get(i).getUserId());
+            row.add(i);
+            ar.add(row);
             if(Data.allUser.get(i).getRole().equals("member")){
                 maxid = Math.max(String.valueOf(Data.allUser.get(i).getUserId()).length(),maxid);
                 maxusername =  Math.max(i.length(),maxusername);
@@ -35,6 +43,7 @@ public class Admin extends User implements Serializable {
                 maxaddress = Math.max(String.valueOf(Data.allUser.get(i).getAddress()).length(),maxaddress);
             }
         }
+        ar.sort(Comparator.comparing(o -> Double.parseDouble(o.get(0))));
         maxaddress -= 6;
         maxusername -= 7;
         maxmembership -= 9;
@@ -45,7 +54,9 @@ public class Admin extends User implements Serializable {
         printLine(length);
         System.out.printf("| %"+maxid+"sID | %"+maxusername+"sUsername | %"+maxname+"sName | %" + maxphone +"sPhone | %" + maxaddress +"sAddress | %" +maxmembership +"sMembership |\n", "","","","","","");
         printLine(length);
-        for(String i : Data.allUser.keySet()){
+        String i;
+        for (ArrayList<String> row : ar) {
+            i = row.get(1);
             if(Data.allUser.get(i).getRole().equals("member")){
                 System.out.printf("| %"+(maxid+2)+"s | %"+(maxusername+8)+"s | %"+(maxname+4)+"s | %"+ (maxphone+5)+"s | %" +(maxaddress+7)+"s | %" +(maxmembership+10) + "s |\n",Data.allUser.get(i).getUserId(),i,Data.allUser.get(i).getName(),Data.allUser.get(i).getPhoneNumber(),Data.allUser.get(i).getAddress(),Data.allUser.get(i).getMemberShip() );
                 printLine(length);
