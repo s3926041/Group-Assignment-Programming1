@@ -261,6 +261,7 @@ public class User implements Serializable {
     }
 
     protected String getPhoneNumber(){return null;}
+    protected String getAddress(){return null;}
     protected String getMemberShip(){return null;}
     protected String getName(){return null;}
     public void viewInformation(){}

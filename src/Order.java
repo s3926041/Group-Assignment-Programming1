@@ -65,6 +65,7 @@ public class Order implements Serializable {
                 System.out.printf("| %"+(maxProductId+10)+"s | %"+(maxProductName+4)+"s | %"+(maxQuantity+8)+".0f | %"+(maxProductPrice+9)+".2f |\n",   p.getpId(),p.getName(),orderDetails.get(p).get("quantity"),orderDetails.get(p).get("price")*orderDetails.get(p).get("quantity"));
                 User.printLine(length);
         }
+        System.out.println("Order status: " + this.orderStatus);
         System.out.printf("Total price before promotion: %.2f\n",this.pricebf);
         System.out.printf("Total price after promotion: %.2f\n",this.totalPrice);
         System.out.println();

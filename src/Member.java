@@ -23,6 +23,11 @@ public class Member extends User implements Serializable {
     }
 
     private String phoneNumber;
+
+    public String getAddress() {
+        return address;
+    }
+
     private String address;
     private HashMap<String, Order> orders = new HashMap<>(); //ORDER ID AND ORDER //ALL ORDER OF A PARTICULAR MEMBER
     private String memberShip = "Regular"; //MEMBERSHIP ARE SET AFTER CUSTOMER CREATE ORDER
